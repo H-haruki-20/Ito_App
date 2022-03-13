@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>ITO</title>
+</head>
+<body>
+    <div class="cotainer">
+        <div class="title">
+            <h1 id="title">ITO</h1> 
+            <h2 id="sub-title">- 協力して，価値観を合わせろ! -</h2>
+        </div>
+
+        <header>
+        </header>
+        <main>
+            <form action="/playmode" method="get" name="form_1">
+                <a href="javascript:form_1.submit()" id="toggle" class="btn btn--orange">Let's PLAY!</a>
+            </form>
+        </main>
+    </div>
+    <script>
+        'use strict';
+
+        document.getElementById("toggle").onclick = function(){
+            location.href = "/playmode"
+        };
+    </script>
+</body>
+</html>
