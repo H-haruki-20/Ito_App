@@ -11,7 +11,12 @@
    <header></header> 
 
    <main>
-       
+       <h1>{{ player_number }}人でプレイしています.</h1>
+       <h2>player1 :</h2>
+       <form action="/playmode-name" method="post" enctype="multipart/form-data">
+           <input type="text" name="player1">
+           <input type="submit" value="決定">
+       </form>
    </main>
 </body>
 </html>

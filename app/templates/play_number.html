@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/play.css">
+    <title>Let's play ITO!</title>
+</head>
+<body>
+   <header></header> 
+
+   <main>
+        <div id="problem">
+            <h1 id="odai">お題 :</h1>
+            <h2>
+                中学生の頃めちゃくちゃ嫌だった授業
+            </h2>
+        </div>
+       <h1>何人で遊びますか?</h1>
+       <form action="/playmode-number" method="post" enctype="multipart/form-data">
+           <input type="number" name="data1">
+           <input type="submit" value="決定">
+       </form>
+   </main>
+</body>
+</html>
