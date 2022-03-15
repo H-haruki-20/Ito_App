@@ -23,5 +23,38 @@
            <input type="submit" value="決定">
        </form>
    </main>
+   <script>
+        let arr = csvToArray("odai.csv");
+        for(let i=0;i<arr.length;i++){
+            console.log(arr[i]);
+        }
+        // CSVファイル読み込み
+        function csvToArray(filename) {
+
+            // CSVファイルを文字列として取得
+            let srt = new XMLHttpRequest();
+            srt.open("GET", filename, false);
+            try {
+                srt.send(null);
+            } catch (err) {
+                console.log(err)
+            }
+
+            // 配列を用意
+            let csletr = [];
+
+            // 改行ごとに配列化
+            let lines = srt.responseText.split("\n");
+
+            // 1行ごとに処理
+            for (let i = 0; i < lines.length; ++i) {
+                let cells = lines[i].split(",");
+                if (cells.length != 1) {
+                    csletr.push(cells);
+                }
+            }
+            return csletr;
+        }
+   </script>
 </body>
 </html>

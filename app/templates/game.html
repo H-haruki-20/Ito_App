@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's play ITO!</title>
+</head>
+<body>
+    <h2 id="gamestart">ゲームスタート</h1>
+    <h3 id="time">制限時間: 5min</h2>
+
+    <h1 id="odai">お題 : 中学生の頃，めっちゃ嫌だった授業</h1>
+
+    <p class="untill">ゲーム終了まで</p>
+    <p class="timer">あと
+        <span id="min"></span>分
+        <span id="sec"></span>秒
+    </p>
+
+    <!-- skipを押すとタイマーの終了を待たずに答えの入力画面に遷移する -->
+    <form action="/answer" method="get" name="form_1">
+        <a href="javascript:form_1.submit()" id="toggle" class="btn btn--orange">SKIP</a>
+    </form>
+    <script>
+        const now = new Date();
+        const over_unix = now.getTime() + 30000;
+        var over = new Date(over_unix);
+        console.log(now)
+        console.log(over)
+
+        function countDown(){
+            const current = new Date();
+            const differ=over.getTime()-current.getTime();//あと何秒か計算
+
+
+            const sec=Math.floor(differ/1000)%60;//ミリ秒を秒に直してから
+            const min=Math.floor(differ/1000/60)%60;//1時間=60分だからね
+
+            //制限時間が経ったら，自動的にanswer.htmlの画面を表示させる．
+            if(min === 0 && sec === 0){
+                window.location.href = "./answer"
+                return;
+            }
+            document.getElementById("min").textContent=String(min).padStart(2,"0")
+            document.getElementById("sec").textContent=String(sec).padStart(2,"0")
+            setTimeout(countDown,1000);//1秒毎に繰り返す
+        }
+        countDown();
+
+    </script>
+</body>
+</html>

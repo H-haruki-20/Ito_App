@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request
+from flask import *
+import random
+from flask_sqlalchemy import SQLAlchemy
 
 # Flaskオブジェクトの生成
 app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+# db = SQLAlchemy(app)
 
 @app.route("/")
 def index():
@@ -19,8 +24,25 @@ def playmodenumberpost():
 
 @app.route("/playmode-name",methods=["POST"])
 def playmodenamepost():
-    name = request.form["player1"]
-    return f"{name}さん，こんにちは！"
+    number = request.form["number"]
+    number = int(number)
+    name = []
+    num = []
+    for i in range(number):
+        name.append(request.form["player" + str(i+1)])
+        num.append(random.randint(1,100))
+        print(name[i], num[i])
+    
+    return render_template("player1.html",play = name, num = num, player_number=number)
+
+# カウントダウンタイマーがスタートする．(game.htmlで表示させる)
+@app.route("/gamestart",methods=["GET"])
+def gamestart():
+    return render_template("game.html")
+
+@app.route("/answer",methods=["GET"])
+def answer():
+    return render_template("answer.html")
 
 
 #おまじない

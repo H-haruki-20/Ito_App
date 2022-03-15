@@ -11,12 +11,46 @@
    <header></header> 
 
    <main>
-       <h1>{{ player_number }}人でプレイしています.</h1>
-       <h2>player1 :</h2>
+       <h1 id="test"></h1>
+       <h1>{{player_number}}人でプレイしています.</h1>
+       <h2>playerの名前を入力してね :</h2>
+       
        <form action="/playmode-name" method="post" enctype="multipart/form-data">
-           <input type="text" name="player1">
+           <div id="form"></div>
            <input type="submit" value="決定">
        </form>
    </main>
+
+   <script>
+       'use strict';
+       //ここのエラーは無視してオッケー(flaskのデータをjsで扱うための処理)
+       var member = {{player_number|tojson}};
+
+       // プレイヤーの名前をflask側に送る
+       console.log(member);
+       for(let i=0;i<member;i++){
+           var input_data = document.createElement("input");
+           input_data.type = "text";
+           var target = "" + (i+1);
+           input_data.name = "player" + target;
+           document.getElementById("form").appendChild(input_data);
+
+           if(i==member-1){
+               var number_data = document.createElement("input");
+               number_data.type = "hidden";
+               number_data.name = "number";
+               number_data.value = member;
+               document.getElementById("form").appendChild(number_data);
+           }
+       }
+
+       // プレイヤーの人数(member)をflask側に送る．
+    //    var xhr = new XMLHttpRequest();
+    //    xhr.open("POST","/playmode-name",true);
+    //    xhr.setRequestHeader("Content-type",'application/x-www-form-urlencoded');
+    //    xhr.send("num=member&id=2");
+
+
+   </script>
 </body>
 </html>

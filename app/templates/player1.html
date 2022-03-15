@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/play.css">
+    <title>Let's play ITO!</title>
+</head>
+<body>
+   <header></header> 
+
+   <main>
+       <h1>{{ player_number }}人でプレイしています.</h1>
+       <div id="player">
+            <h2>player1 : {{ play[0] }}</h2>
+       </div>
+       <div id="number">
+            <h3>あなたの数字は {{ num[0] }}です．</h3>    
+       </div>
+
+       <!-- 単純に次のプレイヤーの情報を表示する． -->
+       <div id="next">
+        <form action="/playmode" method="get" name="form_2">
+            <a href="javascript:void(0);" id="toggle" class="btn btn--orange">CHECK OK!</a>
+        </form>
+        </div>
+        
+        <!-- ゲームスタートボタンを押すと，タイマーの画面に遷移する． -->
+        <div class="final-btn">
+            <form id="final" action="/gamestart" method="get" name="form_3">
+            </form>
+        </div>
+   </main>
+   <script>
+       'use strict';
+       var member = {{player_number|tojson}};
+       var whoplay = {{play|tojson}}
+       var whatnum = {{num|tojson}}
+       var count = 0;
+
+       //Check OKが押されたときの処理
+       document.getElementById("toggle").onclick = function(event){
+           event.preventDefault();
+           count += 1;
+           console.log(count);
+           if(count == member-1){
+               // タイマーの画面に遷移させる処理を書く．
+               document.getElementById("next").remove();
+               var final_btn = document.createElement("input");
+               final_btn.type = "submit";
+               final_btn.value = "ゲームスタート!"
+               document.getElementById("final").appendChild(final_btn);
+           }
+           var whoiswatch = "<h2>player" + (count+1) + " : " + whoplay[count] + "</h2>";
+           document.getElementById("player").innerHTML = whoiswatch;
+           var whatisnum = "<h3>あなたの数字は" + whatnum[count] + "です．</h3>";
+           document.getElementById("number").innerHTML = whatisnum;
+       }
+   </script>
+</body>
+</html>
