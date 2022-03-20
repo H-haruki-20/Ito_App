@@ -9,15 +9,102 @@
 <body>
     <h1>数字が小さいと思われる人から順に数字をみんなに発表しましょう!</h1>
     <h3>プレイヤーを選択してください．</h3>
-    <div id="select">
-        <form id="players" action="/answer" method="post">
-
-        </form>
+    <div id="players">
+        <div id="select"></div>
+        <input type="button" value="Check" id="isTrue">
     </div>
+
+    <form action="/answer" method="get" name="form_1">
+        <a href="javascript:form_1.submit()" id="toggle" class="btn btn--orange">結果を見る</a>
+    </form>
+
+    <div id="result"></div>
+    <div id="final-result"></div>
 
 
     <script>
-        
+        let target = document.getElementById("select");
+        // dataのjson文字列を取得する．
+        let data_str = {{json_data|tojson}};
+        // json文字列をjsonに変換したのがdata
+        data = JSON.parse(data_str);
+        console.log(data["Name"]);
+        const play_number = Object.keys(data["Name"]).length;
+
+        // radioボタンを作る関数
+        function createRadio(names){
+            var child = document.createElement("input");
+            var child_label = document.createElement("label");
+            child.type = "radio";
+            child.value = names;
+            child.name = "player";
+            child.setAttribute("id",names);
+            child_label.setAttribute("for",names);
+            child_label.innerHTML = names;
+            target.appendChild(child);
+            target.appendChild(child_label);
+        }
+        // プレイヤーの人数分，各プレイヤーの名前があるradioボタンをappendChildで作る.
+        for(let i = 0;i<play_number;i++){
+            createRadio(data["Name"][i]);
+        }
+        // radioボタンを押したまま，決定を押すと，その下にそのプレイヤーの数字が表示される．
+        let ai = -1;
+        let previous = -10;
+        let count = 0;
+        function buttonClick(){
+            let checkValue = "";
+            for(let i=0;i<play_number;i++){
+                if(player_name[i].checked){
+                    checkValue = player_name[i].value;
+                    ai = i;
+                }
+            }
+            console.log(checkValue);
+            console.log(data["Number"][ai]);
+            var result_display = document.getElementById("result");
+            var show_result = document.createElement("h3");
+            show_result.textContent = data["Name"][ai] + " : " + data["Number"][ai];
+            result_display.appendChild(show_result);
+            
+            if(data["Number"][ai] > previous){
+                previous = data["Number"][ai];
+                count += 1;
+                if(count === play_number){
+                    console.log("sucess!");
+                    result_display.innerHTML = "<h2>ミッション成功!</h2>";
+                    display();
+                }
+            }else{
+                count = 0;
+                console.log("failure....");
+                result_display.innerHTML = "<h2>ミッション失敗......</h2>";
+                display();
+            }
+        }
+
+
+        let player_name = document.getElementsByName("player");
+        let checkButton = document.getElementById("isTrue");
+        checkButton.addEventListener("click",buttonClick);
+
+        //結果を表示する関数
+        function display(){
+            console.log("きた");
+            let final_target = document.getElementById("final-result");
+            for(let i=0;i<play_number;i++){
+                let playersnumber = data["Name"][i] + "さんは" + data["Number"][i] + "でした．";
+                let final_result_number = document.createElement("h1");
+                final_result_number.textContent = playersnumber;
+                final_target.appendChild(final_result_number);
+                if(i===play_number-1){
+                    let replay_button = document.createElement("button");
+                    replay_button.textContent = "Round2へ";
+                    final_target.appendChild(replay_button);
+                    // replay_button.setAttribute("","");
+                }
+            }
+        }
     </script>
 </body>
 </html>
